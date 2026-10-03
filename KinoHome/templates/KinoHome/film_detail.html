@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+
+
+{% block main %}
+{% load static %}
+{% if latest_films %}
+<h4 class="recommend text-center mt-4">Рекомендуемое</h4>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        {% for latest_film in latest_films %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+            <div class="border rounded shadow-sm p-2 bg-dark text-white h-100 text-center">
+                <a href="{% url 'film' latest_film.pk %}">
+                    <img src="{{ latest_film.image.url }}" class="img-fluid rounded img_hover"
+                         alt="{{ latest_film.title }}" style="aspect-ratio: 2 / 3; object-fit: cover; width: 100%;">
+                </a>
+                <div class="mt-2" style="font-size: 0.9rem;">{{ latest_film.title }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+<div class="row col-12">
+    <div class="col-3">
+        {% include 'KinoHome/components/_categories.html' %}
+    </div>
+
+    <div class="col-1"></div>
+
+    <div class="col-8">
+
+        <div class="card mb-4 bg-dark border border-light mt-4" style="max-width: 100%;">
+
+            <div class="d-flex justify-content-between align-items-center px-4 py-4">
+                <h5 class="card-title fw-bold text-light m-0">{{ film.title }}</h5>
+                <p class="fw-bold text-light m-0">👁️: {{ film.count_views }}</p>
+            </div>
+
+            <div class="row g-0">
+                <div class="col-md-4 d-flex justify-content-center align-items-start py-2 px-3">
+                    <img src="{{ film.image.url }}" class="img rounded" alt="{{ film.title }}" width="230">
+                </div>
+
+                <div class="col-md-8 py-2 px-3 text-light">
+                    <div class="fw-bold mb-3">Год выпуска: {{ film.release }}</div>
+                    <div class="fw-bold mb-3">Страна: {{ film.country }}</div>
+                    <div class="fw-bold mb-3">
+                        Жанр:
+                        {% for category in film.genre.all %}
+                        <span>{{ category.title }}</span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="fw-bold mb-3">Продолжительность: {{ film.duration }}</div>
+                    <div class="fw-bold mb-3">Премьера (РФ): {{ film.premier }}</div>
+                    <div class="fw-bold mb-3">Режиссёр: {{ film.director }}</div>
+                    <div class="fw-bold mb-3">Актеры: {{ film.cast }}</div>
+                </div>
+            </div>
+
+            <hr class="my-4" style="border-top: 3px solid black;">
+
+            <div class="text-light text-center mt-2">ЗДЕСЬ МОГЛА БЫ БЫТЬ ВАША РЕКЛАМА, А НЕ ЭТА 😊</div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <img src="../../static/kino_static/images/advertisment.jpg" alt="" width="500"
+                     class="img rounded shadow">
+            </div>
+
+            <hr class="my-4" style="border-top: 3px solid black;">
+
+            <div class="border border-light bg-black text-light mx-3 mb-3 mt-3">
+                <p class="p-3 mb-0" style="text-align: justify;">{{ film.description }}</p>
+            </div>
+
+            {% if request.user.is_authenticated %}
+            <div class="trailer mt-3 p-4">
+                <h5 class="text-light fw-bold text-center pb-3">Смотреть {{ film.title }} в хорошем качестве 🔻</h5>
+                {% if film.movie %}
+                <div class="border border-secondary rounded-3 shadow-sm p-2 bg-black"
+                     style="max-width: 820px; margin: 0 auto;">
+                    <video preload="metadata" controls width="773" height="400">
+                        <source src="{{ film.movie.url }}" type="video/mp4">
+                    </video>
+                </div>
+                {% elif film.trailer %}
+                <p class="fw-bold fs-5 text-light text-center p-3">Не волнуйтесь фильм скоро добавим! 🎥</p>
+                <p class="fw-bold fs-5 text-light text-center">Трейлер к фильму</p>
+                <div class="border border-secondary rounded-3 shadow-sm p-2 bg-black"
+                     style="max-width: 820px; margin: 0 auto;">
+                    <video preload="metadata" controls width="772" height="400">
+                        <source src="{{ film.trailer.url }}" type="video/mp4">
+                    </video>
+                </div>
+                {% else %}
+
+                <p class="fw-bold fs-5 text-light text-center p-5">Фильм и трейлер пока недоступны. 🎬</p>
+
+                {% endif %}
+            </div>
+            {% else %}
+                <div class="text-danger fs-5 mb-5 fw-bold text-center mt-5">!!! Войдите в аккаунт что бы посмотреть Фильм
+                    !!!</div>
+            {% endif %}
+
+            <div class="same-films my-3 mx-5">
+                <div class="row">
+                    <h4 class="mt-4 text-danger">Рекомендуем посмотреть {{ film.genre.title }}</h4>
+                    <div class="row justify-content-center mt-3  ">
+                        {% for film in same_films %}
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <a href="{{ film.get_absolute_url }}" class=" text-decoration-none">
+                                <div class="card col-6 col-sm-4 col-md-3 w-100">
+                                    <img src="{{ film.image.url }}" class="card-img-top rounded-top img_hover"
+                                         alt="...">
+                                    <hr style="border-top: 5px solid black; margin: 0;">
+                                    <div class="card-body bg-dark card-body p-1">
+                                        <p class="card-text text-center text-light small mb-0 mt-1 title title-hover">
+                                            {{ film.title }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </a>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="comment-block bg-dark text-light p-5">
+
+                {% if not request.user.is_authenticated %}
+                <div class="text-danger fs-5 mb-5 fw-bold text-center">!!! Войдите в аккаунт что бы оставить комментарий
+                    !!!
+                </div>
+                {% endif %}
+
+                <h5 class="text-danger mb-3">Комментарии к фильму {{ film.title }}</h5>
+
+                <div class="comment-list mt-3">
+
+
+                    <div class="comment-list my-5">
+                        {% for comment in comments %}
+                        <div class="comment-user d-flex mt-3 justify-content-between border border-light rounded">
+
+                            <div class="comment-info d-flex pt-3 ">
+
+                                <img src="{{ profile.get_avatar }}" alt="" class="rounded mx-3"
+                                     height="50px" width="50px">
+
+                                <div class="comment-text">
+                                    <a href="#" class=" text-decoration-none">{{ comment.user }}<span
+                                            class="text-light mx-3 fs-6 text-decoration-none">{{ comment.created_at }}</span></a>
+                                    <p class="text-light">{{ comment.text }}</p>
+                                </div>
+
+                            </div>
+
+                            {% if request.user == comment.user %}
+                            <div class="comment-action d-flex align-items-center gap-3 px-4">
+
+                                <a href="{% url 'comment_delete' comment.pk film.pk %}" class="text-danger fs-5" title="Удалить комментарий">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </a>
+
+                                <a type="button" class="text-warning fs-5" data-bs-toggle="modal"
+                                   data-bs-target="#exampleModal{{ comment.pk }}"
+                                   title="Изменить комментарий">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <div class="modal fade" id="exampleModal{{ comment.pk }}" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel{{ comment.pk }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content bg-dark text-light border-light">
+                                            <div class="modal-header border-secondary">
+                                                <h5 class="modal-title" id="exampleModalLabel{{ comment.pk }}">
+                                                    Редактировать комментарий</h5>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Закрыть"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% if request.user.is_authenticated and comment.user == request.user %}
+                                                <form  action="{% url 'comment_update' comment.pk %}" method="post">
+                                                    {% csrf_token %}
+                                                    <textarea name="text" rows="6"
+                                                              class="form-control bg-black text-light border-secondary fs-5">{{ comment.text }}</textarea>
+                                                    <div class="text-end mt-4">
+                                                        <button type="submit" class="btn btn-success">Сохранить</button>
+                                                    </div>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if request.user.is_authenticated %}
+                    <form action="{% url 'save_comment' film.pk %}" method="post" class="add_comment">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button class="btn btn-outline-success text-light border-light">Отправить</button>
+                    </form>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock main %}

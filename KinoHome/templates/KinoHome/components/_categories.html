@@ -1,0 +1,66 @@
+{% load film_tags %}
+
+
+<div class="bg-dark rounded p-2 mb-3 mt-2 border border-light">
+    <ul class="list-group bg-secondary">
+        <li class="list-group-item bg-secondary text-white border-0 p-2"><h5 class="text-center pt-3">Навигационная
+            панель</h5></li>
+        <hr class="my-4" style="border-top: 3px solid black;">
+        <li class="list-group-item bg-secondary text-white border-0 p-2"><h5 class="text-center">Жанры</h5></li>
+        <a href="{% url 'main' %}"
+           class="text-decoration-none text-light px-3 py-2 d-flex justify-content-between align-items-center fw-bold">
+            Все фильмы <span class="text-end text-light">{{ films.count }}</span>
+        </a>
+        {% get_categories as categories %}
+        {% for category in categories %}
+        <li class="list-group-item bg-secondary border-0 px-3 py-2 d-flex justify-content-between align-items-center">
+            <a href="{{ category.get_absolute_url }}" class="text-decoration-none text-light d-block fw-bold">
+                {{ category.title }}
+            </a>
+            <span class="text-end text-light">{{ category.films.count }}</span>
+
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="bg-dark rounded p-2 border border-light">
+    <ul class="list-group small bg-secondary">
+        <li class="list-group-item bg-secondary text-white border-0 p-2 text-center"><h5>Год выпуска</h5></li>
+        {% for year in years %}
+        <li class="list-group-item bg-secondary px-3 py-2 border-0">
+            <a href="{% url 'year' year.pk %}"
+               class="text-decoration-none text-light fw-bold">{{ year.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+<div class="bg-dark rounded p-2 mb-3 mt-4 border border-light">
+
+    <div class="bg-secondary rounded p-2 border border-light">
+
+
+        <h4 class="text-light mt-4 mb-3 text-center">💬Последние комментарии:</h4>
+
+        <div class="list-group mb-4">
+
+            {% for comment in latest_comments %}
+            <div class="list-group-item bg-dark text-light border-light border mb-2 rounded">
+
+                <small class="text-info">{{ comment.user.username }}</small>:
+                {{ comment.text|truncatechars:100 }}
+
+                <br>
+                <span class="text-secondary">К фильму:
+                <a href="{% url 'film' comment.film.pk %}" class="title_hover text-decoration-none text-small">
+                    {{ comment.film.title }}
+                </a>
+                </span>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>

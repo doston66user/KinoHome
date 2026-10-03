@@ -1,0 +1,31 @@
+<div class="card mb-4 bg-dark border border-light" style="max-width: 80%;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <a href="{{ film.get_absolute_url }}" class="img_hover">
+                <div class="image-wrapper">
+                    <img src="{{ film.image.url }}" class="img-fluid" alt="{{ film.title }}">
+                </div>
+            </a>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body text-light">
+                <a href="{% url 'film' film.pk %}" class="text-decoration-none text-light">
+                    <h5 class="card-title fw-bold title_hover">{{ film.title }}</h5>
+                </a>
+                <div class="fw-bold mt-3">Год выпуска 🗓️: {{ film.release }}</div>
+                <div class="fw-bold mt-3">Продолжительность ▶: {{ film.duration }}</div>
+                <div class="fw-bold mt-3">Просмотры 👁️: {{ film.count_views }}</div>
+                <div class="fw-bold mt-3">Страна: {{ film.country }}</div>
+                <p class="fw-bold mt-3">Жанр:
+                    {% for category in film.genre.all %}
+                    <span>{{ category.title }}</span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <a href="{% url 'film' film.pk %}"
+                   class="btn btn-outline-secondary btn-sm w-80 mt-2 fw-bold border border-light text-light">
+                    Смотреть онлайн
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

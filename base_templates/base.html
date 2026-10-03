@@ -1,0 +1,148 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{% static 'kino_static/css/style.css' %}">
+
+    <title>{{ title }}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center text-info fs-4 fw-bold" href="{% url 'main' %}">
+            <img src="{% static 'kino_static/images/kinohome.png' %}" alt="KinoHome Logo" width="35" height="35"
+                 class="me-2">
+            KinoHome
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'main' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'about_us' %}">О сайте</a>
+                </li>
+
+
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Пользователь {{ request.user.username }}
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item " href="{% url 'profile' %}">Профиль 💼</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item " href="{% url 'logout' %}">Выход из аккаунта ‍➡️</a></li>
+                    </ul>
+
+                    {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'login' %}">Вход/Регистрация</a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+                <button class="btn btn-outline-success" type="submit">Поиск</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+<section>
+
+    <div class="container">
+        {% block main %}
+        <div class="row col-12">
+            <div class="col-3">
+                <div class="bg-secondary rounded p-2 mb-3">
+                    <ul class="list-group small bg-secondary">
+                        <li class="list-group-item bg-secondary text-white border-0 p-2"><h3>Жанр</h3></li>
+                        <li class="list-group-item bg-secondary p-2 border-0">
+                            <a href="#" class="text-decoration-none text-light">Элемент</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-secondary rounded p-2">
+                    <ul class="list-group small bg-secondary">
+                        <li class="list-group-item bg-secondary text-white border-0 p-2"><h3>Год выпуска</h3></li>
+                        <li class="list-group-item bg-secondary p-2 border-0">
+                            <a href="#" class="text-decoration-none text-light">Элемент</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-9">
+                <div class="card mb-3 mt-4" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ film.image.url }}" class="img-fluid rounded-start" alt="...">
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card-body my-10px">
+                                <h5 class="card-title">Заголовок карточки</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        {% endblock main %}
+    </div>
+
+
+</section>
+
+
+<footer class="footer text-light pt-4 pb-2 bg-dark border-top border-secondary mt-5">
+    <div class="container text-center col-5 ">
+        <h5 class="fw-bold text-warning">🎬 KinoHome — твой портал в мир кино</h5>
+        <p class="small text-light fs-5 fw-bold">
+            Здесь ты найдешь лучшие фильмы, трейлеры, рецензии и многое другое. Присоединяйся к сообществу киноманов!
+        </p>
+
+        <ul class="list-inline">
+            <li class="list-inline-item mx-2"><a href="{% url 'about_us' %}" class="text-decoration-none text-light">О
+                сайте</a></li>
+            <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-light">Контакты</a></li>
+            <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-light"></a></li>
+        </ul>
+
+        <div class="mt-3">
+            <small class="text-secondary">&copy; 2025 KinoHome. Все права защищены.</small>
+        </div>
+    </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+
+{% block main %}
+
+
+<div class="d-flex justify-content-center mt-5">
+
+    <div class="col-5 card bg-dark text-light p-3">
+        <h5 class="text-light text-center p-3">Авторизация</h5>
+
+        <form action="" method="post">
+
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn btn-outline-success bg-dark border-light" type="submit">Войти</button>
+
+            <div class="register mt-4 text-end ">
+                <h6 class="fw-bold text-warning">Нет Аккаунта?</h6>
+                <a href="{% url 'register' %}" class="text-success fw-bold text-decoration-none">Регистрация</a>
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+{% endblock main %}

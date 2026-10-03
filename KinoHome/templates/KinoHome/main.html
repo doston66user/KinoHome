@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<h4 class="recommend text-center mt-3">Недавно добавленные</h4>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        {% for latest_film in latest_films %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+            <div class="border rounded shadow-sm p-2 bg-dark text-white h-100 text-center">
+                <a href="{% url 'film' latest_film.pk %}">
+                    <img src="{{ latest_film.image.url }}" class="img-fluid rounded img_hover"
+                         alt="{{ latest_film.title }}" style="aspect-ratio: 2 / 3; object-fit: cover; width: 100%;">
+                </a>
+                <div class="mt-2" style="font-size: 0.9rem;">{{ latest_film.title }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="row col-12 mt-4">
+    <div class="col-3">
+        {% include 'KinoHome/components/_categories.html' %}
+    </div>
+
+    <div class="col-1"></div>
+
+    <div class="col-8">
+        <div class="container ml-4">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for film in films %}
+                    {% include 'KinoHome/components/_card.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}

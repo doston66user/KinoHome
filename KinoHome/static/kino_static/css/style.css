@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: #161616;
+  color: white;
+}
+.title {
+  transition: 0.3s ease;
+}
+.title_hover:hover {
+  text-decoration: underlined;
+  color: #FF5733;
+}
+
+.img_hover {
+    transition: 0.3s ease;
+}
+
+.img_hover:hover {
+    filter: brightness(70%);
+}
+
+.nav_panel{
+     background: linear-gradient(to bottom, #1c1c1c, #000000);
+}
+.recommend {
+    color: #ff5733
+}
+
+.add_comment textarea::placeholder {
+    color:white;
+}
+
+.add_comment textarea {
+    height: 100px !important;
+    color: white !important;
+}
+section {
+  flex: 1;
+}
+
